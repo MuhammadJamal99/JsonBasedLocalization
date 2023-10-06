@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\JsonBasedLocalization.web.props" />
+</Project>
