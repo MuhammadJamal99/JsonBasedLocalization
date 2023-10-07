@@ -1,7 +1,34 @@
+using JsonBasedLocalization.web;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.Extensions.Localization;
+using System.Globalization;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddLocalization();
+builder.Services.AddSingleton<IStringLocalizerFactory, JsonStringLocalizerFactory>();
+builder.Services.AddMvc()
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                .AddDataAnnotationsLocalization(options =>
+                {
+                    options.DataAnnotationLocalizerProvider = (type, factory) => factory.Create(typeof(JsonStringLocalizerFactory));
+                });
+
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    CultureInfo[]? supportedCultures = new[] 
+    {
+        new CultureInfo("en-US"),
+        new CultureInfo("ar-EG")
+    };
+
+    options.DefaultRequestCulture = new RequestCulture(culture: supportedCultures[0], uiCulture: supportedCultures[0]);
+    options.SupportedCultures = supportedCultures;
+    options.SupportedUICultures = supportedCultures;
+});
 
 var app = builder.Build();
 
@@ -17,6 +44,18 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+string[]? supportedCultures = new[]
+{
+    "en-US",
+    "ar-EG"
+};
+RequestLocalizationOptions localizationOptions = new RequestLocalizationOptions()
+                                                .SetDefaultCulture(supportedCultures[0])
+                                                .AddSupportedCultures(supportedCultures)
+                                                .AddSupportedUICultures(supportedCultures);
+
+app.UseRequestLocalization(localizationOptions);
 
 app.UseAuthorization();
 
