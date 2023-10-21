@@ -1,6 +1,16 @@
 {
-  "culture": "en",
+  "culture": "English Us",
   "welcome": "Welcome {0}, How are You?",
   "home": "Home",
-  "privacy": "Privacy"
+  "privacy": "Privacy",
+  "language": "Language",
+  "languages": "Languages",
+  "uiLanguage": "UI Language",
+  "date": "Date",
+  "currency": "Currency",
+  "numbers": "Numbers",
+  "create": "Create",
+  "save" : "Save",
+  "required": "Required Field",
+  "name": "Name"
 }

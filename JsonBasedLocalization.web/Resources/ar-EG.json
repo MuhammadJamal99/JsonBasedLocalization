@@ -1,6 +1,16 @@
 {
-  "culture": "ar",
+  "culture": "العربية مصر",
   "welcome": "مرحبا{0} كيف حالك ؟",
   "home": "الرئيسية",
-  "privacy": "الخصوصية"
+  "privacy": "الخصوصية",
+  "language": "اللغة",
+  "languages": "اللغات",
+  "uiLanguage": "لغة واجهة المستخدم",
+  "date": "التاريخ",
+  "currency": "العملة",
+  "numbers": "الارقام",
+  "create": "أضافة",
+  "save": "حفظ",
+  "required": "الحقل اجبارى",
+  "name": "الاسم"
 }
