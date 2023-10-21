@@ -1,4 +1,5 @@
 using JsonBasedLocalization.web;
+using JsonBasedLocalization.web.Middlewares;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Localization;
@@ -60,6 +61,8 @@ RequestLocalizationOptions localizationOptions = new RequestLocalizationOptions(
 app.UseRequestLocalization(localizationOptions);
 
 app.UseAuthorization();
+
+app.UseRequestCulture();
 
 app.MapControllerRoute(
     name: "default",
