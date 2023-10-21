@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Localization;
+﻿using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
 
 namespace JsonBasedLocalization.web;
@@ -6,6 +7,12 @@ namespace JsonBasedLocalization.web;
 public class JsonStringLocalizer : IStringLocalizer
 {
     private readonly JsonSerializer _Serializer = new();
+    private readonly IDistributedCache _cache;
+    public JsonStringLocalizer(IDistributedCache cache) 
+    {
+        _cache = cache;
+    }
+
     public LocalizedString this[string name]     
     {
         get
@@ -48,13 +55,19 @@ public class JsonStringLocalizer : IStringLocalizer
 
     private string GetString(string key) 
     {
-        string? filePath = $"Resources/{Thread.CurrentThread.CurrentCulture.Name}.json";
         string? fullFilePath = Path.GetFullPath($"Resources/{Thread.CurrentThread.CurrentCulture.Name}.json");
         //return File.Exists(fullFilePath) ? GetValueFromJson(key, fullFilePath) : string.Empty;
+
+        string cachedKey = $"locale_{Thread.CurrentThread.CurrentCulture.Name}_{key}";
+        string? cachedValue = _cache.GetString(cachedKey);
+
+        if(!string.IsNullOrWhiteSpace(cachedValue))
+            return cachedValue;
 
         if (File.Exists(fullFilePath))
         {
             string result = GetValueFromJson(key, fullFilePath);
+            _cache.SetString(cachedKey, result);
             return result;
         }
         return string.Empty;
